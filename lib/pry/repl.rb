@@ -103,7 +103,9 @@ class Pry
 
       indented_val = @indent.indent(val)
 
-      if output.tty? && pry.config.correct_indent && Pry::Helpers::BaseHelpers.use_ansi_codes?
+      if output.tty? &&
+         pry.config.correct_indent &&
+         Pry::Helpers::BaseHelpers.use_ansi_codes?
         clean_prompt = Pry::Helpers::Text.strip_color(current_prompt)
         lines = output.calculate_num_lines(clean_prompt.length + indented_val.length)
 

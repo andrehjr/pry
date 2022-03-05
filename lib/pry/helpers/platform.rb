@@ -29,13 +29,16 @@ class Pry
       # @return [Boolean]
       def self.windows_ansi?
         # ensures that ConPty isn't available before checking anything else
-        windows? && !!(windows_conpty? || defined?(Win32::Console) || Pry::Env['ANSICON'] || mri_2?)
+        windows? && !!(windows_conpty? ||
+                       defined?(Win32::Console) ||
+                       Pry::Env['ANSICON'] ||
+                       mri_2?)
       end
 
       # New version of Windows console that understands Ansi escapes codes.
       # @return [Boolean]
       def self.windows_conpty?
-        @conpty ||= windows? && begin
+        @windows_conpty ||= windows? && begin
           require 'fiddle/import'
           require 'fiddle/types'
 
@@ -54,14 +57,16 @@ class Pry
 
           stdout_handle = kernel32.GetStdHandle(std_output_handle)
 
-          stdout_handle > 0 &&
+          stdout_handle.to_i > 0 &&
             kernel32.GetConsoleMode(stdout_handle, mode) != 0 &&
             mode.value & enable_virtual_terminal_processing != 0
-                                rescue LoadError, Fiddle::DLError
-                                  false
-                                ensure
-                                  Fiddle.free mode.to_ptr if mode
-                                  kernel32.handler.handlers.each(&:close) if kernel32
+                                        rescue LoadError, Fiddle::DLError
+                                          false
+                                        ensure
+                                          Fiddle.free mode.to_ptr if mode
+                                          if kernel32
+                                            kernel32.handler.handlers.each(&:close)
+                                          end
         end
       end
 

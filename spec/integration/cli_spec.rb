@@ -9,7 +9,14 @@ RSpec.describe 'The bin/pry CLI', slow: true do
 
       # in Windows, pretend Ansicon is available so we don't get a warning in the output
       # the :err option is equivalent to 2>&1
-      out = IO.popen([{ 'ANSICON' => 'ansicon' }, RbConfig.ruby, "-I", pry_dir, 'bin/pry', *args, err: [:child, :out]], &:read)
+      out = IO.popen([{ 'ANSICON' => 'ansicon' },
+                      RbConfig.ruby,
+                      "-I",
+                      pry_dir,
+                      'bin/pry',
+                      *args,
+                      err: [:child, :out]],
+                     &:read)
       status = $CHILD_STATUS
 
       # Pry will emit silent garbage because of our auto indent feature.
@@ -58,7 +65,9 @@ RSpec.describe 'The bin/pry CLI', slow: true do
 
     it 'adds multiple additional paths to $LOAD_PATH' do
       code = 'p($LOAD_PATH) and exit'
-      out, status = call_pry.call('-I', '/added-1/at/cli', '-I', '/added/at/cli/also', '-e', code)
+      out, status = call_pry.call('-I', '/added-1/at/cli',
+                                  '-I', '/added/at/cli/also',
+                                  '-e', code)
       expect(status).to be_success
       expect(out).to include('/added-1/at/cli')
       expect(out).to include('/added/at/cli/also')
