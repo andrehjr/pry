@@ -43,6 +43,7 @@ jobs:
       run: bundle install
 
     - name: Rubocop lint
+      if: matrix.ruby != '2.0' && matrix.ruby != '2.1' && matrix.ruby != '2.2'
       run: rubocop --parallel
 
     - name: YARD lint
