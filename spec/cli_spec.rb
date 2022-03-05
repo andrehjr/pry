@@ -125,8 +125,6 @@ RSpec.describe Pry::CLI do
 
       it "exits program" do
         expect(Kernel).to receive(:exit)
-        expect(STDOUT).to receive(:puts)
-
         described_class.parse_options(%w[--invalid])
       end
     end
