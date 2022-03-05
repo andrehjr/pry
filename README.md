@@ -209,7 +209,7 @@ hello world!
 pry(main)> def a.goodbye
 pry(main)*   puts "goodbye cruel world!"
 pry(main)* end
-=> nil
+=> :goodbye
 pry(main)> a.goodbye
 goodbye cruel world!
 => nil
@@ -267,23 +267,26 @@ syntax and also simply the name of a method that's in scope. You can optionally
 pass the `-l` option to `show-source` to include line numbers in the output.
 
 In the following example we will enter the `Pry` class, list the instance
-methods beginning with 're' and display the source code for the `rep` method:
+methods beginning with 'se' and display the source code for the `set_last_result` method:
 
 ```ruby
 pry(main)> cd Pry
-pry(Pry):1> ls -M --grep re
-Pry#methods: re  readline  refresh  rep  repl  repl_epilogue  repl_prologue  retrieve_line
-pry(Pry):1> show-source rep -l
+pry(Pry):1> ls -M --grep se
+Pry#methods: raise_up  raise_up!  raise_up_common  reset_eval_string  select_prompt  set_last_result
+pry(Pry):1> show-source set_last_result -l
 
-From: /home/john/ruby/projects/pry/lib/pry/pry_instance.rb:143
+From: /home/john/ruby/projects/pry/lib/pry/pry_instance.rb:405:
+Owner: Pry
+Visibility: public
+Signature: set_last_result(result, code=?)
 Number of lines: 6
 
-143: def rep(target=TOPLEVEL_BINDING)
-144:   target = Pry.binding_for(target)
-145:   result = re(target)
-146:
-147:   show_result(result) if should_print?
-148: end
+405: def set_last_result(result, code = "")
+406:   @last_result_is_exception = false
+407:   @output_ring << result
+408:
+409:   self.last_result = result unless code =~ /\A\s*\z/
+410: end
 ```
 
 Note that we can also view C methods (from Ruby Core) using the
@@ -318,7 +321,7 @@ rb_ary_select(VALUE ary)
 One use-case for Pry is to explore a program at run-time by `cd`-ing in and out
 of objects and viewing and invoking methods. In the course of exploring it may
 be useful to read the documentation for a specific method that you come
-across. Like `show-source` the `show-doc` command supports two syntaxes - the
+across. `show-source` command supports two syntaxes - the
 normal `ri` syntax as well as accepting the name of any method that is currently
 in scope.
 
@@ -340,14 +343,26 @@ In our example we will enter the `Gem` class and view the documentation for the
 
 ```ruby
 pry(main)> cd Gem
-pry(Gem):1> show-doc try_activate
+pry(Gem):1> show-source try_activate -d
 
-From: /Users/john/.rvm/rubies/ruby-1.9.2-p180/lib/ruby/site_ruby/1.9.1/rubygems.rb:201
-Number of lines: 3
+From: /Users/john/rbenv/versions/2.7.1/lib/ruby/2.7.0/rubygems.rb:194:
+Owner: #<Class:Gem>
+Visibility: public
+Signature: try_activate(path)
+Number of lines: 28
 
 Try to activate a gem containing path. Returns true if
 activation succeeded or wasn't needed because it was already
 activated. Returns false if it can't find the path in a gem.
+
+def self.try_activate(path)
+  # finds the _latest_ version... regardless of loaded specs and their deps
+  # if another gem had a requirement that would mean we shouldn't
+  # activate the latest version, then either it would already be activated
+  # or if it was ambiguous (and thus unresolved) the code in our custom
+  # require will try to activate the more specific version.
+
+  spec = Gem::Specification.find_by_path path
 pry(Gem):1>
 ```
 
