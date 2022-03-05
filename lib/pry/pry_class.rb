@@ -87,6 +87,8 @@ class Pry
     files = []
     files << Pry.config.rc_file if Pry.config.rc_file && Pry.config.should_load_rc
     files << LOCAL_RC_FILE if Pry.config.should_load_local_rc
+    p FILES: files
+    p FILES_MAP: files.map { |file| real_path_to(file) }
     files.map { |file| real_path_to(file) }.compact.uniq
   end
 

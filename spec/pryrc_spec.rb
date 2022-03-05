@@ -3,8 +3,6 @@
 describe Pry do
   describe 'loading rc files' do
     before do
-      Object.remove_const(:TEST_RC) if defined?(TEST_RC)
-
       Pry.config.rc_file = 'spec/fixtures/testrc'
       stub_const('Pry::LOCAL_RC_FILE', 'spec/fixtures/testrc/../testrc')
 
