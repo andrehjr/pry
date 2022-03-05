@@ -44,6 +44,7 @@ jobs:
     - name: Install dependencies
       run: bundle install
 
+    # Rubocop is not included on the Gemfile for earlier rubies. This can be dropped as soon as the support is dropped.
     - name: Rubocop lint
       if: matrix.ruby != '2.0' && matrix.ruby != '2.1' && matrix.ruby != '2.2' && matrix.ruby != '2.3'
       run: rubocop --parallel
