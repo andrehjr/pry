@@ -65,6 +65,7 @@ class Pry
         end
 
         begin
+          p SLOP_ARGS: slop_args
           opts = Pry::Slop.parse!(
             slop_args,
             help: true,
@@ -72,7 +73,8 @@ class Pry
             strict: true,
             &options
           )
-        rescue Pry::Slop::InvalidOptionError
+        rescue Pry::Slop::InvalidOptionError => e
+          p ERROR: e
           # Display help message on unknown switches and exit.
           puts Pry::Slop.new(&options)
           Kernel.exit
