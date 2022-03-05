@@ -3,7 +3,7 @@ name: pry
 on: [push]
 
 jobs:
-  ubuntu:
+  test:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
