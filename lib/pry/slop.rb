@@ -217,7 +217,6 @@ class Pry
     #
     # Returns an Array of original items with options removed.
     def parse!(items = ARGV, &block)
-      p PARSE: items
       if items.empty? && @callbacks[:empty]
         @callbacks[:empty].each { |cb| cb.call(self) }
         return items
@@ -474,7 +473,6 @@ class Pry
       return unless (item = items[index])
 
       option, argument = extract_option(item) if item.start_with?('-')
-      p OPTION: option, ARGUMENT: argument
 
       if option
         option.count += 1 unless item.start_with?('--no-')
@@ -505,7 +503,6 @@ class Pry
           option.call(nil)
         end
       else
-        p UNKNOWN: item
         @unknown_options << item if strict? && item =~ /\A--?/
         yield(item) if block && !@trash.include?(index)
       end
