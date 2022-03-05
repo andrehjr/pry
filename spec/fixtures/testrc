@@ -1,2 +1,3 @@
 TEST_RC = [] if !Object.const_defined?(:TEST_RC)
+puts 'from test_rc'
 TEST_RC << 0
