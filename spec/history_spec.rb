@@ -189,6 +189,10 @@ RSpec.describe Pry::History do
       history = Pry::History.new(file_path: '~/test_history')
       error = Class.new(RuntimeError)
 
+      p EXPECTED: File.join(ENV['HOME'].to_s, "/test_history")
+      p GOT: File.expand_path(File.join(ENV['HOME'].to_s, "/test_history"))
+      p WANTS: File.expand_path("~/test_history")
+
       expect(File).to receive(:open)
         .with(File.join(ENV['HOME'].to_s, "/test_history"), 'a', 0o600)
         .and_raise(error)
