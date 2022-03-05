@@ -3,10 +3,10 @@ name: pry
 on: [push]
 
 jobs:
-  test:
+  ubuntu:
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
         ruby:
           - 2.0
           - 2.1
@@ -23,6 +23,9 @@ jobs:
           # - head is currently broken due to yard support for 3.2.0-dev
           - jruby
           # - jruby-head
+        # exclude:
+        #   - os: windows-latest
+        #     ruby: [2.0, 2.1, 2.2, 2.3, 2.4]
 
     runs-on: ${{ matrix.os }}
     continue-on-error: true
@@ -50,35 +53,6 @@ jobs:
       run: |
         touch README # Workaround for "incorrect" links in README.md
         bundle exec yardoc --fail-on-warning --no-progress --readme=README
-
-    - name: Display Ruby version
-      run: ruby -v
-
-    - name: Test
-      run: bundle exec rake
-      env:
-        # Make sure TERM is set so Pry can indent correctly inside tests.
-        TERM: screen-256color
-
-  windows:
-    strategy:
-      matrix:
-        os: [windows-latest]
-        ruby:
-          - 2.7
-          - '3.0'
-
-    runs-on: ${{ matrix.os }}
-    continue-on-error: true
-    steps:
-    - uses: actions/checkout@v2
-
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby }}
-
-    - name: Install dependencies
-      run: bundle install
 
     - name: Display Ruby version
       run: ruby -v
