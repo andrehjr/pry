@@ -57,12 +57,11 @@ class Pry
           stdout_handle > 0 &&
             kernel32.GetConsoleMode(stdout_handle, mode) != 0 &&
             mode.value & enable_virtual_terminal_processing != 0
-
-        rescue LoadError, Fiddle::DLError
-          false
-        ensure
-          Fiddle.free mode.to_ptr if mode
-          kernel32.handler.handlers.each(&:close) if kernel32
+                                rescue LoadError, Fiddle::DLError
+                                  false
+                                ensure
+                                  Fiddle.free mode.to_ptr if mode
+                                  kernel32.handler.handlers.each(&:close) if kernel32
         end
       end
 

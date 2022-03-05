@@ -41,7 +41,7 @@ class Pry
 
       def smart_term?
         term = Pry::Env['TERM']
-        term != nil && term != "dumb"
+        !term.nil? && term != "dumb"
       end
 
       def colorize_code(code)

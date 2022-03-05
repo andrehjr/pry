@@ -4,7 +4,6 @@ require 'tempfile'
 require 'rbconfig'
 
 RSpec.describe Pry::History do
-
   # different platforms require different types of Readline, so best not to rely on it for these tests:
   let(:history) { Pry::History.new }
 
@@ -129,7 +128,6 @@ RSpec.describe Pry::History do
   end
 
   describe ".load_history" do
-
     before do
       history.loader = proc do |&blk|
         "1\n2\n3\ninvalid\0 line\n".each_line { |l| blk.call(l) }

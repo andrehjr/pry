@@ -9,7 +9,6 @@ class Pry
   # will be indented or un-indented by correctly.
   #
   class Indent
-
     # Raised if {#module_nesting} would not work.
     class UnparseableNestingError < StandardError; end
 

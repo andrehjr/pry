@@ -80,7 +80,7 @@ class Pry
     # @return [Integer] number of lines that the specified length occupies
     def calculate_num_lines(length)
       *, cols = size
-      cols == nil || cols == 0 ? 1 : (length / cols + 1).to_i
+      cols.nil? || cols == 0 ? 1 : (length / cols + 1).to_i
     end
 
     private

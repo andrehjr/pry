@@ -169,7 +169,6 @@ class Pry
     # @param [String] current_prompt The prompt to use for input.
     # @return [String?] The next line of input, or `nil` on <Ctrl-D>.
     def read_line(current_prompt)
-
       if pry.config.escape_prompt
         current_prompt = current_prompt.gsub(/(\e\[[\d;]*m)/, "\001\\1\002")
         current_prompt.gsub!(/[\001\002]{2,}/) { |match| match[0] }

@@ -3,9 +3,8 @@
 require 'rbconfig'
 
 RSpec.describe 'The bin/pry CLI', slow: true do
-
-  let(:call_pry) {
-    ->(*args) {
+  let(:call_pry) do
+    lambda { |*args|
       pry_dir = File.expand_path(File.join(__FILE__, '../../../lib'))
 
       # in Windows, pretend Ansicon is available so we don't get a warning in the output
@@ -19,7 +18,7 @@ RSpec.describe 'The bin/pry CLI', slow: true do
 
       [out, status]
     }
-  }
+  end
 
   context "ARGV forwarding" do
     let(:code) { "p(ARGV) and exit" }
