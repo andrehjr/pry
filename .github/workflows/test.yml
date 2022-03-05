@@ -25,7 +25,9 @@ jobs:
           # - jruby-head
         exclude:
           - os: windows-latest
-            ruby: [2.0, 2.1, 2.2, jruby]
+            ruby: jruby
+          - os: windows-latest
+            ruby: 2.1
 
     runs-on: ${{ matrix.os }}
     continue-on-error: true
