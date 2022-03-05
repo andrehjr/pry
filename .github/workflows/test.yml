@@ -23,9 +23,9 @@ jobs:
           # - head is currently broken due to yard support for 3.2.0-dev
           - jruby
           # - jruby-head
-        # exclude:
-        #   - os: windows-latest
-        #     ruby: [2.0, 2.1, 2.2, 2.3, 2.4]
+        exclude:
+          - os: windows-latest
+            ruby: [2.0, 2.1, 2.2]
 
     runs-on: ${{ matrix.os }}
     continue-on-error: true
@@ -43,7 +43,6 @@ jobs:
       run: bundle install
 
     - name: Rubocop lint
-      if: matrix.ruby != '2.0' && matrix.ruby != '2.1'
       run: rubocop --parallel
 
     - name: YARD lint
