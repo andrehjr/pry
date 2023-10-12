@@ -47,3 +47,11 @@ RSpec.configure do |config|
   include Pry::Testable::Evalable
   include Pry::Testable::Variables
 end
+
+require 'readline'
+
+if defined?(Readline) && Readline.respond_to?(:get_screen_size)
+  p READLINE_SCREEN_SIZE: Readline.get_screen_size
+  p ANSICON: ENV['ANSICON']
+  p ENV: ENV.inspect
+end
