@@ -188,7 +188,7 @@ RSpec.describe Pry::Config do
         end
       end
 
-      it "configures input with SimpleStdio" do
+      it "configures input with Readline by default" do
         expect(subject.input).to eql(Readline)
       end
     end
